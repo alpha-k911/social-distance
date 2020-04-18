@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView rssi_msg = (TextView) findViewById(R.id.rssi_value);
                 rssi_msg.setText("Device:" + name + " Strength: " + rssi + " units\n");
                 System.out.println("Device:" + name + " Strength: " + rssi + " units\n");
-                System.out.println("Lesser ############################################################");
+//                System.out.println("Lesser ############################################################");
                 if(mp.isPlaying()) {
                     mp.stop();
                 }
