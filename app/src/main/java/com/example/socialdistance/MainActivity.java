@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Greater ############################################################");
                     mp.start();
                 }else{
-//                    System.out.println("Lesser  ############################################################");
+                    System.out.println("Lesser  ############################################################");
                     if(mp.isPlaying()) {
                         mp.stop();
                     }
