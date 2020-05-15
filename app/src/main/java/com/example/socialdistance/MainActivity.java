@@ -9,6 +9,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -22,7 +26,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
 
     private static final int REQUEST_ENABLE_BT = 1;
@@ -30,8 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     MediaPlayer mp;
 
+    private SensorManager sensorManager;
+    private Sensor mLight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/raw/alarm2");
 //        mp = MediaPlayer.create(this, R.raw.alarm2);
         mp = new MediaPlayer();
@@ -74,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
         Timer timer = new Timer();
         timer.schedule(task,1);
+
+
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null){
+            mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        }
     }
 
 
@@ -100,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
                 if(mp.isPlaying()) {
                     mp.stop();
                 }
-                if(rssi > -60){
-                    System.out.println("Greater ############################################################");
+                if(rssi > -0){
+//                    System.out.println("Greater ############################################################");
                     mp.start();
                 }else{
-                    System.out.println("Lesser  ############################################################");
+//                    System.out.println("Lesser  ############################################################");
                     if(mp.isPlaying()) {
                         mp.stop();
                     }
@@ -115,4 +129,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float lux = event.values[0];
+        TextView t = (TextView) findViewById(R.id.val);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println(lux);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
